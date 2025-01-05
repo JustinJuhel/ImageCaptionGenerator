@@ -9,9 +9,43 @@ Args:
 """
 
 
-def download_dataset(destination_folder: str = "data"):
+def download_flickr(destination_folder: str = "data"):
     # downloading latest version
     source_folder = kagglehub.dataset_download("adityajn105/flickr8k")
+    print("Path to dataset files:", source_folder)
+
+    if os.path.exists(destination_folder):  # checking if the destination folder exists
+        # asking the user if they want to overwrite the existing folder
+        user_input = input(
+            f"The destination folder {destination_folder} already exists. Do you want to overwrite it? (yes/no): "
+        )
+        if user_input.lower() == "yes":
+            shutil.rmtree(destination_folder)  # removing the existing folder
+            shutil.copytree(
+                source_folder, destination_folder
+            )  # copying the source folder to the destination folder
+            print(f"The folder {source_folder} has been copied to {destination_folder}")
+        else:
+            print("Operation cancelled.")
+    else:
+        shutil.copytree(
+            source_folder, destination_folder
+        )  # copying the source folder to the destination folder
+        print(f"The folder {source_folder} has been copied to {destination_folder}")
+
+
+################################################################################################
+
+"""
+This function downloads the GLoVe dataset from Kaggle
+and adds it to the data folder.
+"""
+
+
+def download_glove(destination_folder: str = "data/glove"):
+    source_folder = kagglehub.dataset_download(
+        "rtatman/glove-global-vectors-for-word-representation"
+    )
     print("Path to dataset files:", source_folder)
 
     if os.path.exists(destination_folder):  # checking if the destination folder exists
