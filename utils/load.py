@@ -17,7 +17,7 @@ def download_flickr(destination_folder: str = "data"):
     if os.path.exists(destination_folder):  # checking if the destination folder exists
         # asking the user if they want to overwrite the existing folder
         user_input = input(
-            f"The destination folder {destination_folder} already exists. Do you want to overwrite it? (yes/no): "
+            f"Downloading Flickr 8k: The destination folder {destination_folder} already exists. Do you want to overwrite it? (yes/no): "
         )
         if user_input.lower() == "yes":
             shutil.rmtree(destination_folder)  # removing the existing folder
@@ -51,7 +51,7 @@ def download_glove(destination_folder: str = "data/glove"):
     if os.path.exists(destination_folder):  # checking if the destination folder exists
         # asking the user if they want to overwrite the existing folder
         user_input = input(
-            f"The destination folder {destination_folder} already exists. Do you want to overwrite it? (yes/no): "
+            f"Downloading GloVe: The destination folder {destination_folder} already exists. Do you want to overwrite it? (yes/no): "
         )
         if user_input.lower() == "yes":
             shutil.rmtree(destination_folder)  # removing the existing folder
