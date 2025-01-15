@@ -2,25 +2,31 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+import matplotlib.pyplot as plt
+import numpy as np
+
 # Assuming the ImageCaptioningModel is defined as in the previous response
 class ImageCaptioningModel(nn.Module):
-    def __init__(self, target_size, vocabulary_size, embedding_dim):
+    def __init__(self, target_size, vocabulary_size, embedding_dim, device):
         super(ImageCaptioningModel, self).__init__()
+        self.device = device
+        self.to(self.device)
 
-        # Convolutional layers for feature extraction
-        self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1)
-        self.pool1 = nn.MaxPool2d(kernel_size=2, stride=2)
-        self.conv2 = nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1)
-        self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
-        self.conv3 = nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1)
-        self.pool3 = nn.MaxPool2d(kernel_size=2, stride=2)
+        # # Convolutional layers for feature extraction
+        # self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1)
+        # self.pool1 = nn.MaxPool2d(kernel_size=2, stride=2)
+        # self.conv2 = nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1)
+        # self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
+        # self.conv3 = nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1)
+        # self.pool3 = nn.MaxPool2d(kernel_size=2, stride=2)
 
-        # Flatten the output of the convolutional layers
-        self.flatten = nn.Flatten()
+        # # Flatten the output of the convolutional layers
+        # self.flatten = nn.Flatten()
 
         # Fully connected layers
         self.dropout1 = nn.Dropout(0.2)
-        self.fc1 = nn.Linear(256 * (target_size[0] // 8) * (target_size[1] // 8), 256)
+        # self.fc1 = nn.Linear(256 * (target_size[0] // 8) * (target_size[1] // 8), 256)
+        self.fc1 = nn.Linear(2048, 256)
 
         # Embedding layer for the sequence input
         self.embedding = nn.Embedding(vocabulary_size, embedding_dim, padding_idx=0)
@@ -32,15 +38,16 @@ class ImageCaptioningModel(nn.Module):
         self.fc3 = nn.Linear(256, vocabulary_size)
 
     def forward(self, input_1, input_2):
-        # Convolutional layers
-        x1 = F.relu(self.conv1(input_1))
-        x1 = self.pool1(x1)
-        x1 = F.relu(self.conv2(x1))
-        x1 = self.pool2(x1)
-        x1 = F.relu(self.conv3(x1))
-        x1 = self.pool3(x1)
-        x1 = self.flatten(x1)
+        # # Convolutional layers
+        # x1 = F.relu(self.conv1(input_1))
+        # x1 = self.pool1(x1)
+        # x1 = F.relu(self.conv2(x1))
+        # x1 = self.pool2(x1)
+        # x1 = F.relu(self.conv3(x1))
+        # x1 = self.pool3(x1)
+        # x1 = self.flatten(x1)
 
+        x1 = input_1
         # Fully connected layers
         x1 = self.dropout1(x1)
         x1 = F.relu(self.fc1(x1))
@@ -57,3 +64,4 @@ class ImageCaptioningModel(nn.Module):
         x = self.fc3(x)
 
         return x
+    
