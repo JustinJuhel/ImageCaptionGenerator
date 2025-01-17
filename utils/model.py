@@ -26,7 +26,8 @@ class ImageCaptioningModel(nn.Module):
         # Fully connected layers
         self.dropout1 = nn.Dropout(0.2)
         # self.fc1 = nn.Linear(256 * (target_size[0] // 8) * (target_size[1] // 8), 256)
-        self.fc1 = nn.Linear(2048, 256)
+        self.fc1 = nn.Linear(2048, 512)
+        self.fc2 = nn.Linear(512, 256)
 
         # Embedding layer for the sequence input
         self.embedding = nn.Embedding(vocabulary_size, embedding_dim, padding_idx=0)
@@ -47,10 +48,11 @@ class ImageCaptioningModel(nn.Module):
         # x1 = self.pool3(x1)
         # x1 = self.flatten(x1)
 
-        x1 = input_1
+        # x1 = input_1
         # Fully connected layers
-        x1 = self.dropout1(x1)
-        x1 = F.relu(self.fc1(x1))
+        # x1 = self.dropout1(x1)
+        x1 = F.relu(self.fc1(input_1))
+        x1 = F.relu(self.fc2(x1))
 
         # Embedding layer
         x2 = self.embedding(input_2)
